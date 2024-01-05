@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  auth:
+    build:
+      context: ./src/auth-service
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+  postgres:
+    build:
+      context: ./src/postgres
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
