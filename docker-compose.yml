@@ -1,15 +1,61 @@
 version: '3.8'
 
 services:
-  auth:
+  # auth:
+  #   build:
+  #     context: ./src/auth-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 5000:5000
+  #   environment:
+  #     - DATABASE_HOST=postgres
+  #     - DATABASE_NAME=authdb
+  #     - DATABASE_USER=ken
+  #     - AUTH_TABLE=auth_user
+  # postgres:
+  #   build:
+  #     context: ./src/postgres
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - POSTGRES_USER=ken
+  #     - POSTGRES_PASSWORD=cosh
+  #     - POSTGRES_DB=authdb
+  #     - POSTGRES_HOST_AUTH_METHOD=trust
+  # mongodb:
+  #   build:
+  #     context: ./src/mongoDB
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     MONGO_USERNAME: ken
+  #     MONGO_PASSWORD: cosh
+  #     MONGO_ROOT_USERNAME: ken
+  #     MONGO_ROOT_PASSWORD: cosh
+  #     MONGO_INITDB_ROOT_USERNAME: ken
+  #     MONGO_INITDB_ROOT_PASSWORD: cosh
+  #     MONGO_USERS_LIST: "ken:readWrite:cosh"
+  #   ports:
+  #     - "27017:27017"
+  mongodb:
     build:
-      context: ./src/auth-service
+      context: ./src/mongoDB
       dockerfile: Dockerfile
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: nasi
+      MONGO_INITDB_ROOT_PASSWORD: nasi1234
+      MONGO_ROOT_USERNAME: nasi
+      MONGO_ROOT_PASSWORD: nasi1234
+      MONGO_USERS_LIST: nasi1234
     ports:
-      - 5000:5000
-  postgres:
-    build:
-      context: ./src/postgres
-      dockerfile: Dockerfile
-    ports:
-      - 5432:5432
+      - "27017:27017"
+
+networks:
+  auth-network:
+    driver: bridge
+  converter-network:
+    driver: bridge
+  gateway-network:
+    driver: bridge
+  notification-network:
+    driver: bridge

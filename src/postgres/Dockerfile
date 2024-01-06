@@ -7,3 +7,5 @@ ENV POSTGRES_HOST_AUTH_METHOD=trust
 
 # copy the initilized sql for user account
 COPY init.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 5432
