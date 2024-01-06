@@ -1,54 +1,54 @@
 version: '3.8'
 
 services:
-  # auth:
-  #   build:
-  #     context: ./src/auth-service
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 5000:5000
-  #   environment:
-  #     - DATABASE_HOST=postgres
-  #     - DATABASE_NAME=authdb
-  #     - DATABASE_USER=ken
-  #     - AUTH_TABLE=auth_user
-  # postgres:
-  #   build:
-  #     context: ./src/postgres
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 5432:5432
-  #   environment:
-  #     - POSTGRES_USER=ken
-  #     - POSTGRES_PASSWORD=cosh
-  #     - POSTGRES_DB=authdb
-  #     - POSTGRES_HOST_AUTH_METHOD=trust
-  # mongodb:
-  #   build:
-  #     context: ./src/mongoDB
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     MONGO_USERNAME: ken
-  #     MONGO_PASSWORD: cosh
-  #     MONGO_ROOT_USERNAME: ken
-  #     MONGO_ROOT_PASSWORD: cosh
-  #     MONGO_INITDB_ROOT_USERNAME: ken
-  #     MONGO_INITDB_ROOT_PASSWORD: cosh
-  #     MONGO_USERS_LIST: "ken:readWrite:cosh"
-  #   ports:
-  #     - "27017:27017"
+  auth:
+    build:
+      context: ./src/auth-service
+      dockerfile: Dockerfile
+  postgres:
+    build:
+      context: ./src/postgres
+      dockerfile: Dockerfile
+    # ports:
+    #   - 5432:5432
+  converter:
+    build:
+      context: ./src/converter-service
+      dockerfile: Dockerfile
+    depends_on:
+      - mongodb
+      - rabbitmq
   mongodb:
     build:
       context: ./src/mongoDB
       dockerfile: Dockerfile
     environment:
-      MONGO_INITDB_ROOT_USERNAME: nasi
-      MONGO_INITDB_ROOT_PASSWORD: nasi1234
-      MONGO_ROOT_USERNAME: nasi
-      MONGO_ROOT_PASSWORD: nasi1234
-      MONGO_USERS_LIST: nasi1234
+      MONGO_USERNAME: ken
+      MONGO_PASSWORD: cosh
+      MONGO_ROOT_USERNAME: ken
+      MONGO_ROOT_PASSWORD: cosh
+      MONGO_INITDB_ROOT_USERNAME: ken
+      MONGO_INITDB_ROOT_PASSWORD: cosh
+      MONGO_USERS_LIST: "ken:readWrite:cosh"
+    # ports:
+    #   - "27017:27017"
+  notification:
+   build:
+      context: ./src/notification-service
+      dockerfile: Dockerfile
+  rabbitmq:
+    build:
+      context: ./src/rabbitmq
+      dockerfile: Dockerfile
     ports:
-      - "27017:27017"
+      - "15672:15672"
+      - "5672:5672"
+  gateway:
+    build:
+      context: ./src/gateway-service
+      dockerfile: Dockerfile
+    ports:
+      - 80:8080
 
 networks:
   auth-network:

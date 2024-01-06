@@ -10,4 +10,9 @@ COPY . /app
 
 EXPOSE 8080
 
+ENV AUTH_SVC_ADDRESS="auth:5000"
+ENV MONGODB_VIDEOS_URI="mongodb://ken:cosh@mongodb:27017/videos?authSource=admin"
+ENV MONGODB_MP3S_URI="mongodb://ken:cosh@mongodb:27017/mp3s?authSource=admin"
+ENV PLACEHOLDER=nothing
+
 CMD ["python", "server.py"]
