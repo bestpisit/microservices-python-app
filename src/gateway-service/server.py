@@ -33,7 +33,7 @@ def upload():
     access, err = validate.token(request)
 
     if err:
-        unauth_count.inc()
+        # unauth_count.inc()
         return err
 
     access = json.loads(access)
@@ -57,7 +57,7 @@ def download():
     access, err = validate.token(request)
 
     if err:
-        unauth_count.inc()
+        # unauth_count.inc()
         return err
 
     access = json.loads(access)

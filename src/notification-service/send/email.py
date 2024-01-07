@@ -8,6 +8,9 @@ def notification(message):
     sender_password = os.environ.get("GMAIL_PASSWORD")
     receiver_address = message["username"]
 
+    print("******************************************")
+    print(mp3_fid)
+    print("******************************************")
     msg = EmailMessage()
     msg.set_content(f"mp3 file_id: {mp3_fid} is now ready!")
     msg["Subject"] = "MP3 Download"

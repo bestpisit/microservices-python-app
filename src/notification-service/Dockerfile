@@ -11,7 +11,7 @@ COPY . /app
 ENV MP3_QUEUE="mp3"
 ENV VIDEO_QUEUE="video"
 
-ENV GMAIL_ADDRESS="pimlighthouse@gmail.com" 
-ENV GMAIL_PASSWORD="gkxk acif rhgv erjr"
+ENV GMAIL_ADDRESS="bestentaneer@gmail.com" 
+ENV GMAIL_PASSWORD="ggez"
 
 CMD ["python", "consumer.py"]

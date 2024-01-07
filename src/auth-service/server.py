@@ -17,23 +17,23 @@ def get_db_connection():
 def login():
     auth_table_name = os.getenv('AUTH_TABLE')
     auth = request.authorization
+
     if not auth or not auth.username or not auth.password:
         return 'Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'}
 
     conn = get_db_connection()
     cur = conn.cursor()
     query = f"SELECT email, password FROM {auth_table_name} WHERE email = %s"
-    res = cur.execute(query, (auth.username,))
-    
-    if res is None:
-        user_row = cur.fetchone()
-        email = user_row[0]
-        password = user_row[1]
+    cur.execute(query, (auth.username,))
+    user_row = cur.fetchone()
 
-        if auth.username != email or auth.password != password:
-            return 'Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'}
-        else:
-            return CreateJWT(auth.username, os.environ['JWT_SECRET'], True)
+    if user_row is None:
+        return 'Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'}
+
+    email, password = user_row
+
+    if auth.username == email and auth.password == password:
+        return CreateJWT(auth.username, os.environ['JWT_SECRET'], True)
     else:
         return 'Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'}
 
