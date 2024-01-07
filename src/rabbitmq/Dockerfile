@@ -1,0 +1,5 @@
+FROM rabbitmq:3-management
+
+ENV PLACEHOLDER="NONE"
+
+EXPOSE 15672 5672
