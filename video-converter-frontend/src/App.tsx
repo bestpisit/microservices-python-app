@@ -7,21 +7,22 @@ const App = () => {
   const [token, setToken] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [fid, setFid] = useState('');
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', {}, {
+      const response = await axios.post(`${import.meta.env.VITE_GATEWAY_API}/login`, {}, {
         auth: {
           username: email, // Ensure these are set from your form
           password: password,
         }
       });
       // Handle the successful response here (e.g., storing JWT, navigating)
+      alert("Login Successfully")
       console.log(response.data);
       setToken(response.data);
     } catch (err) {
       // Handle error (e.g., displaying a message to the user)
+      alert("Login Error")
     }
   };
 
@@ -30,17 +31,19 @@ const App = () => {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      await axios.post('/api/upload', formData, {
+      await axios.post(`${import.meta.env.VITE_GATEWAY_API}/upload`, formData, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
+      alert("Upload Successfully");
     } catch (error) {
       console.error('Upload failed', error);
+      alert("Upload Failure");
     }
   };
 
   const handleDownload = async () => {
     try {
-      const response = await axios.get(`/api/download?fid=${fid}`, {
+      const response = await axios.get(`${import.meta.env.VITE_GATEWAY_API}/download?fid=${fid}`, {
         headers: { 'Authorization': `Bearer ${token}` },
         responseType: 'blob',
       });
@@ -52,11 +55,13 @@ const App = () => {
       link.click();
     } catch (error) {
       console.error('Download failed', error);
+      alert("Download Failure");
     }
   };
 
   return (
     <div>
+      <div>Server: {import.meta.env.VITE_GATEWAY_API}</div>
       <div>Token : {token}</div>
       <div>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />

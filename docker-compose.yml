@@ -5,6 +5,8 @@ services:
     build:
       context: ./src/postgres
       dockerfile: Dockerfile
+    networks:
+      - auth-private-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -22,6 +24,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ken
       MONGO_INITDB_ROOT_PASSWORD: cosh
       MONGO_USERS_LIST: "ken:readWrite:cosh"
+    networks:
+      - mongodb-network
     healthcheck:
       test:
         [
@@ -40,18 +44,21 @@ services:
     build:
       context: ./src/rabbitmq
       dockerfile: Dockerfile
+    networks:
+      - conversion-network
+      - notification-network
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 10s
       timeout: 30s
       retries: 3
-    ports:
-      - 15672:15672
-      - 5672:5672
   auth:
     build:
       context: ./src/auth-service
       dockerfile: Dockerfile
+    networks:
+      - auth-private-network
+      - auth-public-network
     depends_on:
       postgres:
         condition: service_healthy
@@ -59,6 +66,9 @@ services:
     build:
       context: ./src/converter-service
       dockerfile: Dockerfile
+    networks:
+      - conversion-network
+      - mongodb-network
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -68,6 +78,8 @@ services:
     build:
       context: ./src/notification-service
       dockerfile: Dockerfile
+    networks:
+      - notification-network
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -76,19 +88,28 @@ services:
       context: ./src/gateway-service
       dockerfile: Dockerfile
     ports:
-      - 80:8080
+      - 8080:8080
+    networks:
+      - mongodb-network
+      - conversion-network
+      - auth-public-network
     depends_on:
       rabbitmq:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+  
+  # Manually Created Frontend
+  frontend:
+    build:
+      context: ./video-converter-frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
 
 networks:
-  auth-network:
-    driver: bridge
-  converter-network:
-    driver: bridge
-  gateway-network:
-    driver: bridge
+  auth-private-network:
+  auth-public-network:
   notification-network:
-    driver: bridge
+  mongodb-network:
+  conversion-network:

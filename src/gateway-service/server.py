@@ -1,6 +1,7 @@
 import os, gridfs, pika, json
 from flask import Flask, request, send_file
 from flask_pymongo import PyMongo
+from flask_cors import CORS  # Import CORS
 from auth import validate
 from auth_svc import access
 from storage import util
@@ -8,6 +9,7 @@ from bson.objectid import ObjectId
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 server = Flask(__name__)
+CORS(server)
 
 mongo_video = PyMongo(server, uri=os.environ.get('MONGODB_VIDEOS_URI'))
 
