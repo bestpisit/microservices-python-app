@@ -1,6 +1,6 @@
-var rootUser = "nasi"
-var rootPass = "nasi1234"
-var usersStr = "nasi:readWrite:nasi1234"
+// var rootUser = "nasi"
+// var rootPass = "nasi1234"
+// var usersStr = "nasi:readWrite:nasi1234"
 
 const adminDb = db.getSiblingDB('admin');
 adminDb.auth(rootUser, rootPass);
@@ -14,7 +14,6 @@ databases.forEach((targetDbStr) => {
         .getRoles({ rolesInfo: 1, showBuiltinRoles: false })
         .map(role => role.role)
         .filter(Boolean);
-        print("YEYEYEYYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYE")
     print(customRoles)
     usersStr
         .trim()
@@ -43,12 +42,10 @@ databases.forEach((targetDbStr) => {
             };
             try {
                 targetDb.createUser(userDoc);
-                print("YEYEYEYYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYE")
             } catch (err) {
                 if (!~err.message.toLowerCase().indexOf('duplicate')) {
                     throw err;
                 }
             }
         });
-        print("YEYEYEYYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYEYE")
 });

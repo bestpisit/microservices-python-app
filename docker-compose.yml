@@ -21,8 +21,6 @@ services:
       MONGO_PASSWORD: cosh
       MONGO_ROOT_USERNAME: ken
       MONGO_ROOT_PASSWORD: cosh
-      MONGO_INITDB_ROOT_USERNAME: ken
-      MONGO_INITDB_ROOT_PASSWORD: cosh
       MONGO_USERS_LIST: "ken:readWrite:cosh"
     networks:
       - mongodb-network

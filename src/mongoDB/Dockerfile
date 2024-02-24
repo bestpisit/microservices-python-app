@@ -2,8 +2,8 @@
 FROM mongo:4.0.8
 
 # Set environment variables (replace these values as needed)
-ENV MONGO_INITDB_ROOT_USERNAME=nasi
-ENV MONGO_INITDB_ROOT_PASSWORD=nasi1234
+ENV MONGO_INITDB_ROOT_USERNAME=ken
+ENV MONGO_INITDB_ROOT_PASSWORD=cosh
 
 # Copy the custom configuration and scripts (if any) into the container
 # Note: You need to have these files in your Docker context

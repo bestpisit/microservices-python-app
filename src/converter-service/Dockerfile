@@ -1,17 +1,17 @@
 FROM python:3.10
 
-# RUN apt-get update && apt-get install -y --no-install-recommends --no-install-suggests build-essential libpq-dev python3-dev ffmpeg && pip install --no-cache-dir --upgrade pip
-
+# work by /app
 WORKDIR /app
+# set up requirements.txt in /app
 COPY ./requirements.txt /app
-
+# install dependencies with no cache
 RUN pip install --no-cache-dir --requirement /app/requirements.txt
+# copy source code to the working dir
 COPY . /app
+
 
 ENV MP3_QUEUE="mp3"
 ENV VIDEO_QUEUE="video"
 ENV MONGODB_URI="mongodb://ken:cosh@mongodb:27017/mp3s?authSource=admin" 
-
-ENV PLACEHOLDER="NONE"
 
 CMD ["python", "consumer.py"]
