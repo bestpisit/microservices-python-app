@@ -7,7 +7,7 @@ ENV RABBITMQ_PASSWORD=password
 ENV RABBITMQ_PID_FILE=/var/lib/rabbitmq/mnesia/rabbitmq
 
 COPY ./init.sh /usr/init.sh
-RUN chmod +x /usr/init.sh
+RUN sed -i 's/\r$//' /usr/init.sh && chmod +x /usr/init.sh
 
 EXPOSE 15672 5672
 
