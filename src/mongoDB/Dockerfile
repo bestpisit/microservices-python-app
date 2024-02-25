@@ -1,15 +1,9 @@
-# Use the standard MongoDB image
 FROM mongo:4.0.8
 
-# Set environment variables (replace these values as needed)
-ENV MONGO_INITDB_ROOT_USERNAME=ken
-ENV MONGO_INITDB_ROOT_PASSWORD=cosh
-
-# Copy the custom configuration and scripts (if any) into the container
-# Note: You need to have these files in your Docker context
-COPY mongo.conf /etc/mongo/mongo.conf
-# COPY init-mongo.sh /docker-entrypoint-initdb.d/
+# add the user
 COPY ensure-users.js /docker-entrypoint-initdb.d/
 
-# Expose the default MongoDB port
+COPY init-mongo.sh /usr/local/bin/init-mongo.sh
+ENTRYPOINT ["/usr/local/bin/init-mongo.sh"]
+
 EXPOSE 27017

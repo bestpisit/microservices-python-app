@@ -30,6 +30,15 @@ def login():
     else:
         return err
 
+@server.route("/signup", methods=["POST"])
+def signup():
+    token, err = access.signup(request)
+
+    if not err:
+        return token
+    else:
+        return err
+
 @server.route("/upload", methods=["POST"])
 def upload():
     access, err = validate.token(request)

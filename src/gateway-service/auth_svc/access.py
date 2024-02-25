@@ -16,3 +16,23 @@ def login(request):
         return response.text, None
     else:
         return None, (response.text, response.status_code)
+    
+def signup(request):
+    auth = request.authorization
+    if not auth:
+        return None, ("missing credentials", 401)
+
+    form_data = {
+        'username': auth.username,
+        'password': auth.password
+    }
+
+    response = requests.post(
+        f"http://{os.environ.get('AUTH_SVC_ADDRESS')}/signup",
+        data=form_data  # Send as form data
+    )
+
+    if response.status_code == 200:
+        return response.text, None
+    else:
+        return None, (response.text, response.status_code)

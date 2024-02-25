@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 const App = () => {
   const [email, setEmail] = useState('');
@@ -23,6 +24,24 @@ const App = () => {
     } catch (err) {
       // Handle error (e.g., displaying a message to the user)
       alert("Login Error")
+    }
+  };
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_GATEWAY_API}/signup`, {}, {
+        auth: {
+          username: email, // Ensure these are set from your form
+          password: password,
+        }
+      });
+      // Handle the successful response here (e.g., storing JWT, navigating)
+      alert("Register Successfully")
+      console.log(response.data);
+      setToken(response.data);
+    } catch (err) {
+      // Handle error (e.g., displaying a message to the user)
+      alert("Register Error")
     }
   };
 
@@ -60,30 +79,52 @@ const App = () => {
   };
 
   return (
-    <div>
-      <div>Server: {import.meta.env.VITE_GATEWAY_API}</div>
-      <div>Token : {token}</div>
-      <div>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button onClick={handleLogin}>Login</button>
+    <div className="container">
+      <div className="serverInfo">
+        Server: {import.meta.env.VITE_GATEWAY_API || "Not Specified"}<br/>
+        Token : {token}
       </div>
-      <div>
-        <input type="file" onChange={(e) => {
-          if (e.target.files) {
-            setFile(e.target.files[0]);
-          } else {
-            setFile(null);
-          }
-        }} />
-        <button onClick={handleUpload}>Upload</button>
+      <div className="authSection">
+        <input
+          type="email"
+          placeholder="Email"
+          className="inputField"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="inputField"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="button" onClick={handleLogin}>Login</button>
+        <button className="button" onClick={handleRegister}>Register</button>
       </div>
-      <div>
-        <input type="text" value={fid} onChange={(e) => setFid(e.target.value)} />
-        <button onClick={handleDownload}>Download</button>
+      <div className="fileSection">
+        <input
+          type="file"
+          className="fileInput"
+          onChange={(e) => {
+            setFile(e.target.files ? e.target.files[0] : null);
+          }}
+        />
+        <button className="button" onClick={handleUpload}>Upload</button>
+      </div>
+      <div className="downloadSection">
+        File ID:
+        <input
+          type="text"
+          className="inputField"
+          value={fid}
+          onChange={(e) => setFid(e.target.value)}
+        />
+        <button className="button" onClick={handleDownload}>Download</button>
       </div>
     </div>
   );
+  
 };
 
 export default App;

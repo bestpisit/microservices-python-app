@@ -14,8 +14,7 @@ def get_db_connection():
 
 @server.route('/signup', methods=['POST'])
 def signup():
-    # auth_table_name = os.getenv('AUTH_TABLE')
-    auth_table_name = 'auth_user'
+    auth_table_name = os.getenv('AUTH_TABLE')
     if not request.form['username'] or not request.form['password']:
         return 'Please enter valid username and password', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'}
 

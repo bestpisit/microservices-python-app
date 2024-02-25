@@ -3,6 +3,3 @@ CREATE TABLE auth_user (
     email VARCHAR (255) NOT NULL,
     password VARCHAR (255) NOT NULL
 );
-
---Add Username and Password for Admin User
-INSERT INTO auth_user (email, password) VALUES ('pims@pimandek.ac.th', '123456');

@@ -1,6 +1,6 @@
-// var rootUser = "nasi"
-// var rootPass = "nasi1234"
-// var usersStr = "nasi:readWrite:nasi1234"
+var rootUser = "<rootUser>";
+var rootPass = "<rootPass>";
+var usersStr = "<userStr>";
 
 const adminDb = db.getSiblingDB('admin');
 adminDb.auth(rootUser, rootPass);

@@ -1,42 +1,70 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Ensure content is centered vertically */
+  min-height: 100vh; /* Make container fill the screen height */
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box; /* Ensures padding doesn't add to the width */
+}
+
+.serverInfo,
+.authSection,
+.fileSection,
+.downloadSection {
+  width: 100%; /* Adjust width to your preference */
+  max-width: 500px; /* Ensures the sections don't get too wide on larger screens */
+  margin: 20px auto; /* Centers the sections horizontally */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Ensures padding doesn't add to the width */
+  word-wrap: break-word; /* Allows long words to be broken and wrap to the next line */
+}
+
+.inputField,
+.fileInput,
+.button {
+  display: block;
+  width: calc(100% - 16px); /* Adjust width to ensure it fills the container, accounting for padding */
+  margin: 10px auto; /* Centers the input/button horizontally */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.inputField:focus,
+.fileInput:focus {
+  outline: none;
+  border-color: #4d90fe;
+}
+
+.authSection,
+.fileSection,
+.downloadSection {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .serverInfo,
+  .authSection,
+  .fileSection,
+  .downloadSection {
+    width: 90%; /* Makes the sections slightly narrower on smaller screens */
+    padding: 15px; /* Adjust padding for smaller screens */
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
