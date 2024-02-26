@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: bestengineer/microservices-python-app:postgres
+    environment:
+      - POSTGRES_USER=ken
+      - POSTGRES_PASSWORD=cosh
+      - POSTGRES_DB=authdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - auth-private-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 30s
+      retries: 3
+  mongodb:
+    image: bestengineer/microservices-python-app:mongodb
+    environment:
+      MONGO_USERSTR: "ken:readWrite:cosh"
+      MONGO_INITDB_ROOT_USERNAME: "ken"
+      MONGO_INITDB_ROOT_PASSWORD: "cosh"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mongodb-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongo",
+          "--quiet",
+          "127.0.0.1/test",
+          "--eval",
+          "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+  rabbitmq:
+    image: bestengineer/microservices-python-app:rabbitmq
+    environment:
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - conversion-network
+      - notification-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3
+  auth:
+    image: bestengineer/microservices-python-app:auth
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_NAME=authdb
+      - DATABASE_USER=ken
+      - DATABASE_PASSWORD=cosh
+      - AUTH_TABLE=auth_user
+      - JWT_SECRET=bybuabest
+    networks:
+      - auth-private-network
+      - auth-public-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+  converter:
+    image: bestengineer/microservices-python-app:converter
+    environment:
+      MP3_QUEUE: "mp3"
+      VIDEO_QUEUE: "video"
+      MONGODB_URI: "mongodb://ken:cosh@mongodb:27017/mp3s?authSource=admin"  
+    networks:
+      - conversion-network
+      - mongodb-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+  notification:
+    image: bestengineer/microservices-python-app:notification
+    environment:
+      - GMAIL_ADDRESS=bestengineer@gmail.com
+      - GMAIL_TOKEN=kencosh is the best
+      - MP3_QUEUE=mp3
+      - VIDEO_QUEUE=video
+    networks:
+      - notification-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  gateway:
+    image: bestengineer/microservices-python-app:gateway
+    environment:
+    - AUTH_SVC_ADDRESS=auth:5000
+    - MONGODB_VIDEOS_URI=mongodb://ken:cosh@mongodb:27017/videos?authSource=admin
+    - MONGODB_MP3S_URI=mongodb://ken:cosh@mongodb:27017/mp3s?authSource=admin
+    ports:
+      - 8080:8080
+    networks:
+      - mongodb-network
+      - conversion-network
+      - auth-public-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+  frontend:
+    image: bestengineer/microservices-python-app:frontend
+    ports:
+      - 80:80
+
+volumes:
+  postgres_data:
+  mongo_data:
+  rabbitmq_data:
+
+networks:
+  auth-private-network:
+  auth-public-network:
+  notification-network:
+  mongodb-network:
+  conversion-network:
