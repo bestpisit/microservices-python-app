@@ -22,9 +22,9 @@ docker compose up
 ```
 
 ## Accessing Application (Local)
-[Frontend => http://localhost](https://localhost){:target="_blank" rel="noopener"}
+[Frontend => http://localhost](https://localhost)
 
-[Gateway => http://localhost:8080](https://localhost:8080){:target="_blank" rel="noopener"}
+[Gateway => http://localhost:8080](https://localhost:8080)
 
 ## Accessing Application (Global)
 
