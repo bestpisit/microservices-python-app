@@ -84,6 +84,7 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+    restart: always
   notification:
     image: bestengineer/microservices-python-app:notification
     environment:
@@ -96,6 +97,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+    restart: always
   gateway:
     image: bestengineer/microservices-python-app:gateway
     environment:
@@ -113,10 +115,12 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+    restart: always
   frontend:
     image: bestengineer/microservices-python-app:frontend
     ports:
       - 80:80
+    restart: always
 
 volumes:
   postgres_data:
