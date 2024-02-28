@@ -89,7 +89,7 @@ services:
     image: bestengineer/microservices-python-app:notification
     environment:
       - GMAIL_ADDRESS=bestengineer@gmail.com
-      - GMAIL_TOKEN=kencosh is the best
+      - GMAIL_TOKEN=kencoshisthebest
       - MP3_QUEUE=mp3
       - VIDEO_QUEUE=video
     networks:

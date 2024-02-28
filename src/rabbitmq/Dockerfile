@@ -2,6 +2,7 @@ FROM rabbitmq:3-management
 
 #identify the processID file location for rabbitMQ to write its processID to work with OS
 ENV RABBITMQ_PID_FILE=/var/lib/rabbitmq/mnesia/rabbitmq
+#healthCheck
 COPY ./ensureQueue.sh /usr/ensureQueue.sh
 COPY ./init.sh /usr/init.sh
 # fix bad interpreter by window
