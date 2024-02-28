@@ -57,7 +57,7 @@ services:
       - conversion-network
       - notification-network
     healthcheck:
-      test: rabbitmq-diagnostics -q ping
+      test: ["CMD", "sh", "/usr/ensureQueue.sh"]
       interval: 10s
       timeout: 30s
       retries: 3
