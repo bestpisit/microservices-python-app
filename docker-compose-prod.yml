@@ -53,8 +53,8 @@ services:
     healthcheck:
       test: ["CMD", "sh", "/usr/ensureQueue.sh"]
       interval: 10s
-      timeout: 30s
-      retries: 3
+      timeout: 100s
+      retries: 10
   auth:
     image: bestengineer/microservices-python-app:auth
     environment:
